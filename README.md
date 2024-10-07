@@ -4,4 +4,4 @@
 
 [![LICENSE](https://img.shields.io/github/license/CrispiestChicken/SftEngMethods.svg?style=flat-square)](https://github.com/CrispiestChicken/SftEngMethods/blob/master/LICENSE)
 
-
+[![Releases](https://img.shields.io/github/release/CrispiestChicken/SftEngMethods/all.svg?style=flat-square)](https://github.com/CrispiestChicken/SftEngMethods/releases)
