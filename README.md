@@ -1,2 +1,2 @@
 <h1>Software Enginering Methods Class Labs Work</h1>
-<p></p>
+<h2>![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/CrispiestChicken/SftEngMethods/main.yml?branch=master)</h2>
