@@ -1,18 +1,24 @@
 package com.napier.sem;
 
-import java.sql.*;
 
 public class Main
 {
     public static void main(String[] args)
     {
         // Create new Application
-        Database db = new Database();
+        App a = new App();
 
         // Connect to database
-        db.connect();
+        a.connect();
+        // Get Employee
+        Employee emp = a.getEmployee(255530);
+        // Display results
+        a.displayEmployee(emp);
 
         // Disconnect from database
-        db.disconnect();
+        a.disconnect();
     }
+
+
+
 }
