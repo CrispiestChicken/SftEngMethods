@@ -1,39 +1,68 @@
 package com.napier.sem;
 
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoCollection;
-import org.bson.Document;
+import java.sql.*;
 
 public class Main
 {
     public static void main(String[] args)
     {
 
-        // Connect to MongoDB on local docker container
-        try(MongoClient mongoClient = new MongoClient("MongoDB-Server", 27017))
+        // Trys to load database driver and ends if it can't
+        try
         {
-            // Get a database - will create when we use it
-            MongoDatabase database = mongoClient.getDatabase("mydb");
-            // Get a collection from the database
-            MongoCollection<Document> collection = database.getCollection("test");
-            // Create a document to store
-            Document doc = new Document("name", "Kyle Read")
-                    .append("class", "Software Engineering Methods")
-                    .append("year", "2024")
-                    .append("result", new Document("CW", 95).append("EX", 85));
-            // Add document to collection
-            collection.insertOne(doc);
-
-            // Check document in collection
-            Document myDoc = collection.find().first();
-            System.out.println(myDoc.toJson());
+            // Load Database driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
         }
-        catch (Exception e)
+        catch (ClassNotFoundException e)
         {
-            System.out.println(e.getMessage());
+            System.out.println("Could not load SQL driver");
+            System.exit(-1);
         }
 
 
+        // Connection to the database
+        Connection con = null;
+        int retries = 100;
+        for (int i = 0; i < retries; ++i)
+        {
+            System.out.println("Connecting to database...");
+            try
+            {
+                // Wait a bit for db to start
+                Thread.sleep(30000);
+                // Connect to database
+                con = DriverManager.getConnection("jdbc:mysql://db:3306/employees?useSSL=false", "root", "example");
+                System.out.println("Successfully connected");
+                // Wait a bit
+                Thread.sleep(10000);
+                // Exit for loop
+                break;
+            }
+            // If fails to connect and gives SQLException
+            catch (SQLException sqle)
+            {
+                System.out.println("Failed to connect to database attempt " + Integer.toString(i));
+                System.out.println(sqle.getMessage());
+            }
+            // If fails to connect and gives an InterruptedException
+            catch (InterruptedException ie)
+            {
+                System.out.println("Thread interrupted? Should not happen.");
+            }
+        }
+
+        // Close the database when it gets to here if the connection is running.
+        if (con != null)
+        {
+            try
+            {
+                // Close connection
+                con.close();
+            }
+            catch (Exception e)
+            {
+                System.out.println("Error closing connection to database");
+            }
+        }
     }
 }
